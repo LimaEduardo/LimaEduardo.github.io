@@ -10,12 +10,31 @@
 </head>
 <body>
     <div id="app" class="container">
-        <h1>Olá </h1>
+        <div class="row align-items-center justify-content-center">
+            <h1>Scoreboard</h1>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-5">
+                <p>Número de instruções:</p> <input v-model="numberOfInstructions" type="text" class="form-control" placeholder="Número de instruções">
+                <!-- <button @click="updateNumInstructions"> Update number of instructions </button> -->
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="n in parseInt(numberOfInstructions)"> {{n}} </li>
+                </ul>
+            </div>
+        </div>
     </div>
 
   <script>
         var app = new Vue({
             el: '#app',
+            data: {
+                numberOfInstructions: 0
+            },
+            methods: {
+                updateNumInstructions: function(){
+                    console.log(this.numberOfInstructions);
+                }
+            }
         
         })
   </script>
