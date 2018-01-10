@@ -56,7 +56,7 @@ var app = new Vue({
             var json = JSON.stringify(this.getJSON());
             axios({
                 method: 'post',
-                url: 'http://localhost:3000/sb',
+                url: 'http://michelwander.pythonanywhere.com/arq2',
                 data: json,
                 headers: {
                     'Content-Type': 'application/json'
@@ -114,9 +114,13 @@ var table = new Vue({
     },
     methods: {
         nextStep: function(){
-            console.log(Object.keys(this.mainTable).length);
-            console.log(this.tableIndex);
             this.tableIndex < Object.keys(this.mainTable).length ? this.tableIndex++ : null ;
+        },
+        stepBack: function(){
+            this.tableIndex > 0 ? this.tableIndex-- : null ;
+        },
+        finalTable: function(){
+            this.tableIndex = Object.keys(this.mainTable).length;
         }
     }
 })
