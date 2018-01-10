@@ -8,11 +8,11 @@ Vue.component('instruction', {
             instructionSelected: ''
         }
     },
-    template: '<div class="row"><select v-model="instructionSelected" class="form-control col"><option v-for="i in instructions" :value="i">{{i}}</option>\
+    template: '<div class="row"><select v-model="instructionSelected" class="form-control col-md-3"><option v-for="i in instructions" :value="i">{{i}}</option>\
     </select>\
-    <input v-model="rs" type="text" class="form-control col" placeholder="RD">\
-    <input v-if="!isBnez()" v-model="rt" type="text" class="form-control col" placeholder="RS">\
-    <input v-model="rd" type="text" class="form-control col" placeholder="RT">\
+    <input v-model="rs" type="text" class="form-control col-md-3" placeholder="RD">\
+    <input v-if="!isBnez()" v-model="rt" type="text" class="form-control col-md-3" placeholder="RS">\
+    <input v-model="rd" type="text" class="form-control col-md-3" placeholder="RT">\
     </div>',
     methods: {
         isBnez : function(){

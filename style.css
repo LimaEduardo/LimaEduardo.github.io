@@ -1,0 +1,15 @@
+.latency{
+    border: 1px solid rgb(230, 226, 226);
+    margin: 20px auto;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.instruction-group{
+    margin: 20px 13px auto;
+}
+
+.instruction{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

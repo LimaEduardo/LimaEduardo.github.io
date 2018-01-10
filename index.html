@@ -8,38 +8,61 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <div id="app" class="container">
         <div class="row align-items-center justify-content-center">
             <h1>Scoreboard</h1>
         </div>
-        <div class="col-md-12">
+        <hr>
+        <div>
             <p>Number of instructions:</p> <input v-model="numberOfInstructions" type="text" class="form-control col-md-3" placeholder="Number of instructions">
             <!-- <button @click="updateNumInstructions"> Update number of instructions </button> -->
-            <ul class="list-group">
-                <instruction v-for="n in parseInt(numberOfInstructions)" :key="n">  </instruction>
-            </ul>
-            <p> Enter the number of execution cycles taken by the functional units: </p>
-            <div class="from-inline">
-                <label for="latADD">ADD.D Latency:</label><input v-model="latADDD" id="latADDD" type="text" class="form-control col-md-3" placeholder="ADD.D Latency">
-                <label for="latSUB">SUB.D Latency:</label><input v-model="latSUBD" id="latSUBD" type="text" class="form-control col-md-3" placeholder="SUB.D Latency">
-                <label for="latMULT">MULT.D Latency:</label><input v-model="latMULTD" id="latMULTD" type="text" class="form-control col-md-3" placeholder="MULT.D Latency">
-                <label for="latDIV">DIV.D Latency:</label><input v-model="latDIVD" id="latDIVD" type="text" class="form-control col-md-3" placeholder="DIV.D Latency">
-                <label for="latLD">L.D Latency:</label><input v-model="latLD" id="latLD" type="text" class="form-control col-md-3" placeholder="L.D Latency">
-                <label for="latSD">S.D Latency:</label><input v-model="latSD" id="latSD" type="text" class="form-control col-md-3" placeholder="S.D Latency">
-                <label for="latADD">ADD Latency:</label><input v-model="latADD" id="latADD" type="text" class="form-control col-md-3" placeholder="ADD Latency">
-                <label for="latDADDUI">DADDUI Latency:</label><input v-model="latDADDUI" id="latDADDUI" type="text" class="form-control col-md-3" placeholder="DADDUI Latency">
-                <label for="latBEQ">BEQ Latency:</label><input v-model="latBEQ" id="latBEQ" type="text" class="form-control col-md-3" placeholder="BEQ Latency">
-                <label for="latBNEZ">BNEZ Latency:</label><input v-model="latBNEZ" id="latBNEZ" type="text" class="form-control col-md-3" placeholder="BNEZ Latency">
+            <div class="instruction-group">
+                <instruction class="instruction" v-for="n in parseInt(numberOfInstructions)" :key="n">  </instruction>
             </div>
-            <button @click="sendInfo">Result</button>
+            <hr>
+            <h3>Latencies:</h3>
+            <div class="from-inline col-md-12 latency">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="latADD">ADD.D Latency:</label><input v-model="latADDD" id="latADDD" type="text" class="form-control" placeholder="ADD.D Latency">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="latSUB">SUB.D Latency:</label><input v-model="latSUBD" id="latSUBD" type="text" class="form-control" placeholder="SUB.D Latency">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="latMULT">MULT.D Latency:</label><input v-model="latMULTD" id="latMULTD" type="text" class="form-control" placeholder="MULT.D Latency">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="latDIV">DIV.D Latency:</label><input v-model="latDIVD" id="latDIVD" type="text" class="form-control" placeholder="DIV.D Latency">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="latLD">L.D Latency:</label><input v-model="latLD" id="latLD" type="text" class="form-control" placeholder="L.D Latency">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="latSD">S.D Latency:</label><input v-model="latSD" id="latSD" type="text" class="form-control" placeholder="S.D Latency">
+                    </div>
+                </div>
+                <div class="row" style="margin-top:15px">
+                    <div class="col-md-3">
+                        <label for="latADD">ADD Latency:</label><input v-model="latADD" id="latADD" type="text" class="form-control" placeholder="ADD Latency">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="latDADDUI">DADDUI Latency:</label><input v-model="latDADDUI" id="latDADDUI" type="text" class="form-control" placeholder="DADDUI Latency">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="latBEQ">BEQ Latency:</label><input v-model="latBEQ" id="latBEQ" type="text" class="form-control" placeholder="BEQ Latency">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="latBNEZ">BNEZ Latency:</label><input v-model="latBNEZ" id="latBNEZ" type="text" class="form-control" placeholder="BNEZ Latency">
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" @click="sendInfo">Result</button>
         </div>
     </div>
-
-    <!-- <input type="text" class="form-control" v-model="input-field1">
-            <input type="text" class="form-control" v-model="input-field2">
-            <input type="text" class="form-control" v-model="input-field3"> -->
 
     <script src="app.js">
 
