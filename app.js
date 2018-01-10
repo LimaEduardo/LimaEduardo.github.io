@@ -25,6 +25,7 @@ Vue.component('instruction', {
 var app = new Vue({
     el: '#app',
     data: {
+        showApp: true,
         numberOfInstructions: 0,
         integerCycles: 0,
         instructions: [],
@@ -60,6 +61,15 @@ var app = new Vue({
                 headers: {
                     'Content-Type': 'application/json'
                 }
+            }).then((response) => {
+                table.showTable = true;
+                this.showApp = false;
+                table.result = response.data;
+                console.log("sucesso");
+                console.log(typeof table.result);
+            }).catch((e) => {
+                console.log("erro");
+                console.log(e);
             });
         },
         getJSON: function(){
@@ -77,6 +87,36 @@ var app = new Vue({
                 'latBNEZ':  this.latBNEZ,
                 'instructions': this.instructions                 
             })
+        }
+    }
+})
+
+var table = new Vue({
+    el: '#table',
+    updated: function(){
+        if(this.firstUpdate){
+            this.mainTable = this.result.mainTable; 
+            this.unitTable = this.result.unitTable;
+            this.registerTable = this.result.registerTable;
+            this.firstUpdate = false;
+            console.log("update");
+        }
+        
+    },
+    data: {
+        firstUpdate: true,
+        showTable: false,
+        result: {},
+        tableIndex: 1,
+        mainTable: {},
+        unitTable: {},
+        registerTable: {}
+    },
+    methods: {
+        nextStep: function(){
+            console.log(Object.keys(this.mainTable).length);
+            console.log(this.tableIndex);
+            this.tableIndex < Object.keys(this.mainTable).length ? this.tableIndex++ : null ;
         }
     }
 })

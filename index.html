@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <div id="app" class="container">
+    <div id="app" v-if="showApp" class="container">
         <div class="row align-items-center justify-content-center">
             <h1>Scoreboard</h1>
         </div>
@@ -62,11 +62,87 @@
             </div>
             <button class="btn btn-primary" @click="sendInfo">Result</button>
         </div>
+        <div v-for="j in 5">
+        </div>
     </div>
 
-    <script src="app.js">
+    <div id="table" v-if="showTable" class="container">
+        <h1> Result: </h1>
+        <table class="table col-md-12">
+                <thead>
+                    <tr>
+                        <th scope="col">Instructions</th>
+                        <th scope="col">Issue</th>
+                        <th scope="col">Read operand</th>
+                        <th scope="col">Execution complete</th>
+                        <th scope="col">Write result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="table in mainTable[tableIndex]">
+                        <td>{{table.instruction}}</td>
+                        <td>{{table.issue}}</td>
+                        <td>{{table.read_operand}}</td>
+                        <td>{{table.execution_complete}}</td>
+                        <td>{{table.write_result}}</td>
+                    </tr>
+                </tbody>
+        </table>
+        <br>
+        <h1>Functional unit</h1>
+        <table class="table col-md-12">
+                <thead>
+                    <tr>
+                        <th scope="col">Unit</th>
+                        <th scope="col">Busy</th>
+                        <th scope="col">Op</th>
+                        <th scope="col">Fi</th>
+                        <th scope="col">Fj</th>
+                        <th scope="col">Fk</th>
+                        <th scope="col">Qj</th>
+                        <th scope="col">Qk</th>
+                        <th scope="col">Rj</th>
+                        <th scope="col">Rk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="table in unitTable[tableIndex]">
+                        <td>{{table.unit}}</td>
+                        <td>{{table.busy}}</td>
+                        <td>{{table.op}}</td>
+                        <td>{{table.Fi}}</td>
+                        <td>{{table.Fj}}</td>
+                        <td>{{table.Fk}}</td>
+                        <td>{{table.Qj}}</td>
+                        <td>{{table.Qk}}</td>
+                        <td>{{table.Rj}}</td>
+                        <td>{{table.Rk}}</td>
+                    </tr>
+                </tbody>
+                
+        </table>
+        <br>
+        <h1>Register result</h1>
+        <table class="table col-md-12">
+                <thead>
+                    <tr>
+                            <th scope="col">Clock</th>
+                        <th scope="col" v-for="table in registerTable[tableIndex]">{{table.registerName}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <td>{{tableIndex}}</td>
+                    <td v-for="table in registerTable[tableIndex]">{{table.unit}}</td>
+                </tbody>
+                
+        </table>
 
+        <button @click="nextStep" class="btn btn-primary">Next step</button>
         
-    </script>
+        <!-- {{mainTable[tableIndex][0].instruction}} -->
+        
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
