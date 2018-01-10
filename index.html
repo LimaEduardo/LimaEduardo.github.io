@@ -7,6 +7,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <div id="app" class="container">
@@ -24,9 +25,9 @@
                 <label for="integerCycles">Integer:</label><input v-model="integerCycles" id="integerCycles" type="text" class="form-control col-md-3" placeholder="Integer">
                 <p>FP Add:</p><input v-model="FPAddCycles" type="text" class="form-control col-md-3" placeholder="FP Add">
                 <p>FP Multiply:</p><input v-model="FPMultiplyCycles" type="text" class="form-control col-md-3" placeholder="FP Multiply">
-                <p>FP Divide:</p><input v-model="DivideCycles" type="text" class="form-control col-md-3" placeholder="FP Divide">
+                <p>FP Divide:</p><input v-model="FPDivideCycles" type="text" class="form-control col-md-3" placeholder="FP Divide">
             </div>
-            <button @click="runAlgorithm">Result</button>
+            <button @click="sendInfo">Result</button>
         </div>
     </div>
 
@@ -40,17 +41,17 @@
             data: function () {
                 return {
                     instructions: ['ADD.D','SUBD','MULTD','DIV.D','L.D','ADD','DADDUI', 'BEQ', 'BNEZ'],
-                    register1: '',
-                    register2: '',
-                    register3: '',
+                    rs: '',
+                    rt: '',
+                    rd: '',
                     instructionSelected: ''
                 }
             },
             template: '<div class="row"><select v-model="instructionSelected" class="form-control col"><option v-for="i in instructions" :value="i">{{i}}</option>\
             </select>\
-            <input v-model="register1" type="text" class="form-control col" placeholder="Register 1">\
-            <input v-model="register2" type="text" class="form-control col" placeholder="Register 2">\
-            <input v-model="register3" type="text" class="form-control col" placeholder="Register 3">\
+            <input v-model="rs" type="text" class="form-control col" placeholder="RD">\
+            <input v-model="rt" type="text" class="form-control col" placeholder="RS">\
+            <input v-model="rd" type="text" class="form-control col" placeholder="RT">\
             </div>'
         })
         
@@ -62,16 +63,46 @@
                 integerCycles: 0,
                 FPAddCycles: 0,
                 FPMultiplyCycles: 0,
-                DivideCycles: 0,
+                FPDivideCycles: 0,
+                instructions: []
             },
             methods: {
                 updateNumInstructions: function(){
                     console.log(this.numberOfInstructions);
                 },
-                runAlgorithm: function(){
+                sendInfo: function(){
+                    this.instructions = [];
                     this.$children.forEach(element => {
-                        console.log(element);
+                        var instruction = {
+                            'instructionName': element.instructionSelected,
+                            'rs': element.rs,
+                            'rt': element.rt,
+                            'rd': element.rd
+                        };
+                        this.instructions.push(instruction);
                     });;
+                    var json = JSON.stringify(this.getJSON());
+                    console.log(json);
+                    var self = this;
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:3000/sb',
+                        data: json,
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                },
+                getJSON: function(){
+                    return({
+                        'numberOfInstructions': this.numberOfInstructions,
+                        'integerCycles': this.integerCycles,
+                        'FPAddCycles': this.FPAddCycles,
+                        'FPMultiplyCycles': this.FPMultiplyCycles,
+                        'FPDivideCycles': this.FPDivideCycles,
+                        'instructions': this.instructions
+                        
+                    })
                 }
             }
         })
