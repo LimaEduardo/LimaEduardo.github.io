@@ -14,29 +14,67 @@
             <h1>Scoreboard</h1>
         </div>
         <div class="col-md-12">
-            <div class="col-md-5">
-                <p>Número de instruções:</p> <input v-model="numberOfInstructions" type="text" class="form-control" placeholder="Número de instruções">
-                <!-- <button @click="updateNumInstructions"> Update number of instructions </button> -->
-                <ul class="list-group">
-                    <li class="list-group-item" v-for="n in parseInt(numberOfInstructions)"> {{n}} </li>
-                </ul>
+            <p>Number of instructions:</p> <input v-model="numberOfInstructions" type="text" class="form-control col-md-3" placeholder="Number of instructions">
+            <!-- <button @click="updateNumInstructions"> Update number of instructions </button> -->
+            <ul class="list-group">
+                <instruction v-for="n in parseInt(numberOfInstructions)" :key="n">  </instruction>
+            </ul>
+            <p> Enter the number of execution cycles taken by the functional units: </p>
+            <div class="from-inline">
+                <label for="integerCycles">Integer:</label><input v-model="integerCycles" id="integerCycles" type="text" class="form-control col-md-3" placeholder="Integer">
+                <p>FP Add:</p><input v-model="FPAddCycles" type="text" class="form-control col-md-3" placeholder="FP Add">
+                <p>FP Multiply:</p><input v-model="FPMultiplyCycles" type="text" class="form-control col-md-3" placeholder="FP Multiply">
+                <p>FP Divide:</p><input v-model="DivideCycles" type="text" class="form-control col-md-3" placeholder="FP Divide">
             </div>
+            <button @click="runAlgorithm">Result</button>
         </div>
     </div>
 
-  <script>
+    <!-- <input type="text" class="form-control" v-model="input-field1">
+            <input type="text" class="form-control" v-model="input-field2">
+            <input type="text" class="form-control" v-model="input-field3"> -->
+
+    <script>
+
+        Vue.component('instruction', {
+            data: function () {
+                return {
+                    instructions: ['ADD.D','SUBD','MULTD','DIV.D','L.D','ADD','DADDUI', 'BEQ', 'BNEZ'],
+                    register1: '',
+                    register2: '',
+                    register3: '',
+                    instructionSelected: ''
+                }
+            },
+            template: '<div class="row"><select v-model="instructionSelected" class="form-control col"><option v-for="i in instructions" :value="i">{{i}}</option>\
+            </select>\
+            <input v-model="register1" type="text" class="form-control col" placeholder="Register 1">\
+            <input v-model="register2" type="text" class="form-control col" placeholder="Register 2">\
+            <input v-model="register3" type="text" class="form-control col" placeholder="Register 3">\
+            </div>'
+        })
+        
+
         var app = new Vue({
             el: '#app',
             data: {
-                numberOfInstructions: 0
+                numberOfInstructions: 0,
+                integerCycles: 0,
+                FPAddCycles: 0,
+                FPMultiplyCycles: 0,
+                DivideCycles: 0,
             },
             methods: {
                 updateNumInstructions: function(){
                     console.log(this.numberOfInstructions);
+                },
+                runAlgorithm: function(){
+                    this.$children.forEach(element => {
+                        console.log(element);
+                    });;
                 }
             }
-        
         })
-  </script>
+    </script>
 </body>
 </html>
