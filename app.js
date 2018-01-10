@@ -40,9 +40,6 @@ var app = new Vue({
         latBNEZ: 0
     },
     methods: {
-        updateNumInstructions: function(){
-            console.log(this.numberOfInstructions);
-        },
         sendInfo: function(){
             this.instructions = [];
             this.$children.forEach(element => {
@@ -56,7 +53,6 @@ var app = new Vue({
                 this.instructions.push(instruction);
             });;
             var json = JSON.stringify(this.getJSON());
-            console.log(json);
             axios({
                 method: 'post',
                 url: 'http://localhost:3000/sb',
