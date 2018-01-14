@@ -68,6 +68,7 @@ var app = new Vue({
                 console.log("sucesso");
                 console.log(typeof table.result);
             }).catch((e) => {
+                console.log(json);
                 console.log("erro");
                 console.log(e);
             });
@@ -79,8 +80,8 @@ var app = new Vue({
                 'latSUBD': this.latSUBD,
                 'latMULTD': this.latMULTD,
                 'latDIVD':  this.latDIVD,
-                'latLD':  this.latLDD,
-                'latSD':  this.latSDD,
+                'latLD':  this.latLD,
+                'latSD':  this.latSD,
                 'latADD': this.latADD,
                 'latDADDUI': this.latDADDUI,
                 'latBEQ': this.latBEQ,
