@@ -15,6 +15,19 @@
         <div class="row align-items-center justify-content-center">
             <h1>Scoreboard</h1>
         </div>
+        <div v-if="showHelp" class="alert alert-info" role="alert">
+            <strong>Hello!</strong> This web app takes instructions and run the Scoreboard Algorithm on then. <br>
+            To run this app, make sure that: <br>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-warning">The registrator must be F# <strong>DON'T</strong> use any another registrator (like R1,R3,C2 ...) </li>
+                <li class="list-group-item list-group-item-warning">Make sure you're using only even numbers. This app <strong>DON'T</strong> run with odd numbers (like F1,F3)</li>
+              </ul>
+        </div>
+        <div v-if="showError" class="alert alert-danger" role="alert">
+            <strong>Oh! this is embarrassing. </strong> We coudn't run the algoritm :( <br>
+            Make sure you are following the instructions described in 'help me' section. <br>
+        </div>
+        <button type="button" @click="getHelp" class="btn btn-info">{{helpButton}}</button>
         <hr>
         <div>
             <p>Number of instructions:</p> <input v-model="numberOfInstructions" type="text" class="form-control col-md-3" placeholder="Number of instructions">
@@ -60,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary" @click="sendInfo">Result</button>
+            <button class="btn btn-primary" @click="sendInfo">Get result</button>
         </div>
         <div v-for="j in 5">
         </div>
@@ -140,6 +153,7 @@
         <button @click="nextStep" class="btn btn-primary">Next step</button>
         <button @click="stepBack" class="btn btn-primary">Step back</button>
         <button @click="finalTable" class="btn btn-primary">Final table</button>
+        <button @click="backToIndex" class="btn btn-primary">Get back</button>
         
         <!-- {{mainTable[tableIndex][0].instruction}} -->
         

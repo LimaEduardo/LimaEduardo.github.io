@@ -21,11 +21,16 @@ Vue.component('instruction', {
     }
 })
 
+// regex f+[123456789]*[24680]
 
 var app = new Vue({
     el: '#app',
     data: {
+        helpButton: "Help me",
+        showHelp: false,
         showApp: true,
+        showError: false,
+        error:"",
         numberOfInstructions: 0,
         integerCycles: 0,
         instructions: [],
@@ -62,15 +67,14 @@ var app = new Vue({
                     'Content-Type': 'application/json'
                 }
             }).then((response) => {
+                this.showError = false;
                 table.showTable = true;
                 this.showApp = false;
                 table.result = response.data;
-                console.log("sucesso");
-                console.log(typeof table.result);
             }).catch((e) => {
-                console.log(json);
-                console.log("erro");
-                console.log(e);
+                this.error = "";
+                this.showHelp = false;
+                this.showError = true;
             });
         },
         getJSON: function(){
@@ -88,6 +92,10 @@ var app = new Vue({
                 'latBNEZ':  this.latBNEZ,
                 'instructions': this.instructions                 
             })
+        },
+        getHelp: function(){
+            this.showHelp = !this.showHelp;
+            this.showHelp ? this.helpButton = "Hide help" : this.helpButton = "Help me"
         }
     }
 })
@@ -122,6 +130,10 @@ var table = new Vue({
         },
         finalTable: function(){
             this.tableIndex = Object.keys(this.mainTable).length;
+        },
+        backToIndex: function(){
+            this.showTable = false;
+            app.showApp = true;
         }
     }
 })
