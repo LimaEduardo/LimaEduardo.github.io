@@ -95,7 +95,9 @@ var app = new Vue({
         },
         getHelp: function(){
             this.showHelp = !this.showHelp;
-            this.showHelp ? this.helpButton = "Hide help" : this.helpButton = "Help me"
+            this.showHelp ? this.helpButton = "Hide help" : this.helpButton = "Help me";
+            pattern = new RegExp(/f+[123456789]*[24680]/);
+            console.log(pattern.exec("f4"));
         }
     }
 })
