@@ -29,6 +29,29 @@
             Make sure you are following the instructions described in 'help me' section. <br>
         </div>
         <button type="button" @click="getHelp" class="btn btn-info">{{helpButton}}</button>
+        <button type="button" @click="getExample" class="btn btn-info">I want an example</button>
+        <div v-if="showExample" class="alert alert-info" role="alert">
+            We gonna run this example: <br>
+            
+            LD F6,34(R2)<br>
+            LD F2,45(R2)<br>
+            MULT F0,F2,F4<br>
+            SUBD F8,F6,F2<br>
+            DIVD F10,F0,F6<br>
+            ADDD F6,F8,D2<br>
+            <br>
+            Latencies: <br>
+            LD = 1 <br>
+            MULT = 10 <br>
+            SUBD = 2 <br>
+            DIVD = 40 <br>
+            ADDD = 2 <br>
+
+            It's ok? <br><br>
+            <button type="button" @click="runExample" class="btn btn-success">Ok! Run this example</button>
+            <button type="button" @click="showExample = false" class="btn btn-danger">I don't want to run this example </button>
+
+        </div>
         <hr>
         <div>
             <p>Number of instructions:</p> <input v-model="numberOfInstructions" type="text" class="form-control col-md-3" placeholder="Number of instructions">
@@ -74,7 +97,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary" @click="sendInfo">Get result</button>
+            <button class="btn btn-primary" @click="sendInfo(false)">Get result</button>
         </div>
         <div v-for="j in 5">
         </div>

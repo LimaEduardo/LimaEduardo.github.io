@@ -11,13 +11,7 @@ Vue.component('instruction', {
             dontCheck: ['L.D', 'S.D', 'DADDUI', 'ADD', 'BEQ', 'BNEZ']
         }
     },
-
-//     <div class="form-group has-warning">
-//     <label class="control-label" for="inputWarning">Input with warning</label>
-//     <input type="text" class="form-control" id="inputWarning">
-//     <span class="help-block">Something may have gone wrong</span>
-//   </div>
-    template: '<div class="row"><select v-model="instructionSelected" class="form-control col-md-3"><option v-for="i in instructions" :value="i">{{i}}</option>\
+    template: '<div class="row" id="row"><select v-model="instructionSelected" class="form-control col-md-3"><option v-for="i in instructions" :value="i">{{i}}</option>\
     </select>\
     <input v-model="rs" @blur="itsAcceptable()" type="text" class="form-control col-md-3" placeholder="RD">\
     <input v-if="!isBnez()" @blur="itsAcceptable()" v-model="rt" type="text" class="form-control col-md-3" placeholder="RS">\
@@ -72,23 +66,25 @@ var app = new Vue({
         latDADDUI: 0,
         latBEQ: 0,
         latBNEZ: 0,
-        apiLink: "http://michelwander.pythonanywhere.com/arq2"
+        apiLink: "http://michelwander.pythonanywhere.com/arq2",
+        showExample: false
     },
     methods: {
-        sendInfo: function(){
-            this.instructions = [];
-            this.$children.forEach(element => {
-                element.instructionSelected === 'BNEZ' ? element.rt = null : element.rt;
-                var instruction = {
-                    'instructionName': element.instructionSelected,
-                    'rs': element.rs,
-                    'rt': element.rt,
-                    'rd': element.rd
-                };
-                this.instructions.push(instruction);
-            });;
+        sendInfo: function(example){
+            if (!example){
+                this.instructions = [];
+                this.$children.forEach(element => {
+                    element.instructionSelected === 'BNEZ' ? element.rt = null : element.rt;
+                    var instruction = {
+                        'instructionName': element.instructionSelected,
+                        'rs': element.rs,
+                        'rt': element.rt,
+                        'rd': element.rd
+                    };
+                    this.instructions.push(instruction);
+                });;
+            }
             var json = JSON.stringify(this.getJSON());
-            console.log("requisita");
             axios({
                 method: 'post',
                 url: this.apiLink,
@@ -97,13 +93,11 @@ var app = new Vue({
                     'Content-Type': 'application/json'
                 }
             }).then((response) => {
-                console.log("show");
                 this.showError = false;
                 table.showTable = true;
                 this.showApp = false;
                 table.result = response.data;
             }).catch((e) => {
-                console.log("n show");
                 this.error = "";
                 this.showHelp = false;
                 this.showError = true;
@@ -130,7 +124,6 @@ var app = new Vue({
             this.showHelp ? this.helpButton = "Hide help" : this.helpButton = "Help me";
         },
         clearValues: function(){
-            console.log("called");
             this.numberOfInstructions = 0,
             this.integerCycles = 0,
             this.instructions = [],
@@ -144,6 +137,25 @@ var app = new Vue({
             this.latDADDUI = 0,
             this.latBEQ = 0,
             this.latBNEZ = 0
+        },
+        runExample: function(){
+            this.numberOfInstructions = 6;
+            this.integerCycles = 0;
+            this.instructions = [{"instructionName":"L.D","rs":"F6","rt":"34","rd":"R2"},{"instructionName":"L.D","rs":"F2","rt":"45","rd":"R3"},{"instructionName":"MULTD","rs":"F0","rt":"F2","rd":"F4"},{"instructionName":"SUBD","rs":"F8","rt":"F6","rd":"F2"},{"instructionName":"DIV.D","rs":"F10","rt":"F0","rd":"F6"},{"instructionName":"ADD.D","rs":"F6","rt":"F8","rd":"F2"}];
+            this.latADDD = 1;
+            this.latSUBD = 2;
+            this.latMULTD = 10;
+            this.latDIVD = 40;
+            this.latLD = 1;
+            this.latSD = 1;
+            this.latADD = 1;
+            this.latDADDUI = 1;
+            this.latBEQ = 1;
+            this.latBNEZ = 1;
+            this.sendInfo(true);       
+        },
+        getExample: function(){        
+            this.showExample = !this.showExample;
         }
     }
 })
@@ -156,7 +168,6 @@ var table = new Vue({
             this.unitTable = this.result.unitTable;
             this.registerTable = this.result.registerTable;
             this.firstUpdate = false;
-            console.log("update");
         }
         
     },
