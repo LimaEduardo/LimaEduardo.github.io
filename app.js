@@ -112,7 +112,7 @@ var app = new Vue({
         getJSON: function(){
             return({
                 'numberOfInstructions': this.numberOfInstructions,
-                'latADDD': this.latADD,
+                'latADDD': this.latADDD,
                 'latSUBD': this.latSUBD,
                 'latMULTD': this.latMULTD,
                 'latDIVD':  this.latDIVD,
