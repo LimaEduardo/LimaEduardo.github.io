@@ -72,6 +72,7 @@ var app = new Vue({
     methods: {
         sendInfo: function(example){
             if (!example){
+                console.log("não devia passar aqui")
                 this.instructions = [];
                 this.$children.forEach(element => {
                     element.instructionSelected === 'BNEZ' ? element.rt = null : element.rt;
@@ -85,6 +86,7 @@ var app = new Vue({
                 });;
             }
             var json = JSON.stringify(this.getJSON());
+            console.log(json);
             axios({
                 method: 'post',
                 url: this.apiLink,
@@ -97,6 +99,7 @@ var app = new Vue({
                 table.showTable = true;
                 this.showApp = false;
                 table.result = response.data;
+                this.clearValues();
             }).catch((e) => {
                 this.error = "";
                 this.showHelp = false;
@@ -152,6 +155,8 @@ var app = new Vue({
             this.latDADDUI = 1;
             this.latBEQ = 1;
             this.latBNEZ = 1;
+            console.log("mandou");
+            table.firstUpdate = true,
             this.sendInfo(true);       
         },
         getExample: function(){        
@@ -164,6 +169,7 @@ var table = new Vue({
     el: '#table',
     updated: function(){
         if(this.firstUpdate){
+            console.log("pass");
             this.mainTable = this.result.mainTable; 
             this.unitTable = this.result.unitTable;
             this.registerTable = this.result.registerTable;
@@ -193,7 +199,13 @@ var table = new Vue({
         backToIndex: function(){
             this.showTable = false;
             app.showApp = true;
+            this.result = {},
+            this.tableIndex = 1,
+            this.mainTable = {},
+            this.unitTable = {},
+            this.registerTable = {}
             app.clearValues();
+
         }
     }
 })
