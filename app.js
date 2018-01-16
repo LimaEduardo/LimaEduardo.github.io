@@ -7,7 +7,8 @@ Vue.component('instruction', {
             rd: '',
             instructionSelected: '',
             warning: false,
-            textWarning: ''
+            textWarning: '',
+            dontCheck: ['L.D', 'S.D', 'DADDUI', 'ADD', 'BEQ', 'BNEZ']
         }
     },
 
@@ -28,6 +29,10 @@ Vue.component('instruction', {
             return this.instructionSelected === 'BNEZ';
         },
         itsAcceptable: function(){
+            if (this.dontCheck.includes(this.instructionSelected)){
+                this.warning = false;
+                return;
+            }
             pattern = new RegExp(/(f+((\d)*)([02468]+))\b/);
             var existsAnError = false;
             if(this.rs !== ""){
@@ -66,7 +71,8 @@ var app = new Vue({
         latADD: 0,
         latDADDUI: 0,
         latBEQ: 0,
-        latBNEZ: 0
+        latBNEZ: 0,
+        apiLink: "http://michelwander.pythonanywhere.com/arq2"
     },
     methods: {
         sendInfo: function(){
@@ -85,7 +91,7 @@ var app = new Vue({
             console.log("requisita");
             axios({
                 method: 'post',
-                url: 'http://michelwander.pythonanywhere.com/arq2',
+                url: this.apiLink,
                 data: json,
                 headers: {
                     'Content-Type': 'application/json'
