@@ -145,7 +145,7 @@ var app = new Vue({
             this.numberOfInstructions = 6;
             this.integerCycles = 0;
             this.instructions = [{"instructionName":"L.D","rs":"F6","rt":"34","rd":"R2"},{"instructionName":"L.D","rs":"F2","rt":"45","rd":"R3"},{"instructionName":"MULTD","rs":"F0","rt":"F2","rd":"F4"},{"instructionName":"SUBD","rs":"F8","rt":"F6","rd":"F2"},{"instructionName":"DIV.D","rs":"F10","rt":"F0","rd":"F6"},{"instructionName":"ADD.D","rs":"F6","rt":"F8","rd":"F2"}];
-            this.latADDD = 1;
+            this.latADDD = 2;
             this.latSUBD = 2;
             this.latMULTD = 10;
             this.latDIVD = 40;
@@ -204,7 +204,7 @@ var table = new Vue({
             this.mainTable = {},
             this.unitTable = {},
             this.registerTable = {}
-            app.clearValues();
+            /*app.clearValues();*/
 
         }
     }
