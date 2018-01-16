@@ -204,7 +204,7 @@ var table = new Vue({
             this.mainTable = {},
             this.unitTable = {},
             this.registerTable = {}
-            /*app.clearValues();*/
+            app.clearValues();
 
         }
     }
