@@ -81,7 +81,13 @@
 
     <div id="table" v-if="showTable" class="container">
         <h1> Result: </h1>
-        <table class="table col-md-12">
+        <hr>
+        <button @click="nextStep" class="btn btn-primary">Next step</button>
+        <button @click="stepBack" class="btn btn-primary">Step back</button>
+        <button @click="finalTable" class="btn btn-primary">Final table</button>
+        <br><br>
+        <h3> Main table: </h3>
+        <table class="table col-md-6">
                 <thead>
                     <tr>
                         <th scope="col">Instructions</th>
@@ -102,7 +108,7 @@
                 </tbody>
         </table>
         <br>
-        <h1>Functional unit</h1>
+        <h3>Functional unit</h3>
         <table class="table col-md-12">
                 <thead>
                     <tr>
@@ -135,7 +141,7 @@
                 
         </table>
         <br>
-        <h1>Register result</h1>
+        <h3>Register result</h3>
         <table class="table col-md-12">
                 <thead>
                     <tr>
@@ -153,7 +159,8 @@
         <button @click="nextStep" class="btn btn-primary">Next step</button>
         <button @click="stepBack" class="btn btn-primary">Step back</button>
         <button @click="finalTable" class="btn btn-primary">Final table</button>
-        <button @click="backToIndex" class="btn btn-primary">Get back</button>
+        <br><br>
+        <button @click="backToIndex" class="btn btn-primary">Try again with new instructions</button>
         
         <!-- {{mainTable[tableIndex][0].instruction}} -->
         

@@ -5,18 +5,41 @@ Vue.component('instruction', {
             rs: '',
             rt: '',
             rd: '',
-            instructionSelected: ''
+            instructionSelected: '',
+            warning: false,
+            textWarning: ''
         }
     },
+
+//     <div class="form-group has-warning">
+//     <label class="control-label" for="inputWarning">Input with warning</label>
+//     <input type="text" class="form-control" id="inputWarning">
+//     <span class="help-block">Something may have gone wrong</span>
+//   </div>
     template: '<div class="row"><select v-model="instructionSelected" class="form-control col-md-3"><option v-for="i in instructions" :value="i">{{i}}</option>\
     </select>\
-    <input v-model="rs" type="text" class="form-control col-md-3" placeholder="RD">\
-    <input v-if="!isBnez()" v-model="rt" type="text" class="form-control col-md-3" placeholder="RS">\
-    <input v-model="rd" type="text" class="form-control col-md-3" placeholder="RT">\
+    <input v-model="rs" @blur="itsAcceptable()" type="text" class="form-control col-md-3" placeholder="RD">\
+    <input v-if="!isBnez()" @blur="itsAcceptable()" v-model="rt" type="text" class="form-control col-md-3" placeholder="RS">\
+    <input v-model="rd" @blur="itsAcceptable()" type="text" class="form-control col-md-3" placeholder="RT">\
+    <p v-if="warning" class="text-warning">Some variables are written in a non-recomended way. Check it.</p>\
     </div>',
     methods: {
         isBnez : function(){
-            return this.instructionSelected === 'BNEZ' ? true : false;
+            return this.instructionSelected === 'BNEZ';
+        },
+        itsAcceptable: function(){
+            pattern = new RegExp(/(f+((\d)*)([02468]+))\b/);
+            var existsAnError = false;
+            if(this.rs !== ""){
+                pattern.test(this.rs) ? null : existsAnError = true
+            }
+            if(this.rd !== ""){
+                pattern.test(this.rd) ? null : existsAnError = true
+            }
+            if(this.rt !== ""){
+                pattern.test(this.rt) ? null : existsAnError = true
+            }
+            this.warning = existsAnError;
         }
     }
 })
@@ -59,6 +82,7 @@ var app = new Vue({
                 this.instructions.push(instruction);
             });;
             var json = JSON.stringify(this.getJSON());
+            console.log("requisita");
             axios({
                 method: 'post',
                 url: 'http://michelwander.pythonanywhere.com/arq2',
@@ -67,11 +91,13 @@ var app = new Vue({
                     'Content-Type': 'application/json'
                 }
             }).then((response) => {
+                console.log("show");
                 this.showError = false;
                 table.showTable = true;
                 this.showApp = false;
                 table.result = response.data;
             }).catch((e) => {
+                console.log("n show");
                 this.error = "";
                 this.showHelp = false;
                 this.showError = true;
@@ -96,8 +122,22 @@ var app = new Vue({
         getHelp: function(){
             this.showHelp = !this.showHelp;
             this.showHelp ? this.helpButton = "Hide help" : this.helpButton = "Help me";
-            pattern = new RegExp(/f+[123456789]*[24680]/);
-            console.log(pattern.exec("f4"));
+        },
+        clearValues: function(){
+            console.log("called");
+            this.numberOfInstructions = 0,
+            this.integerCycles = 0,
+            this.instructions = [],
+            this.latADDD = 0,
+            this.latSUBD = 0,
+            this.latMULTD = 0,
+            this.latDIVD = 0,
+            this.latLD = 0,
+            this.latSD = 0,
+            this.latADD = 0,
+            this.latDADDUI = 0,
+            this.latBEQ = 0,
+            this.latBNEZ = 0
         }
     }
 })
@@ -136,6 +176,7 @@ var table = new Vue({
         backToIndex: function(){
             this.showTable = false;
             app.showApp = true;
+            app.clearValues();
         }
     }
 })
